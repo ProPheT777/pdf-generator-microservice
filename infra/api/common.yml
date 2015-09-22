@@ -1,0 +1,69 @@
+api_volume:
+  image: busybox
+  volumes:
+    - "./../../src/api/:/var/www/api/"
+  tty: true
+  container_name: api_volume
+
+#/usr/local/bin/wkhtmltopdf
+php:
+  build: php
+  restart: always
+  ports:
+    - "9000:9000"
+    - "9001:9001"
+  volumes:
+    - "./logs/php/:/var/log/php/"
+  container_name: php
+
+redis:
+  image: tutum/redis
+  ports:
+    - "6379:6379"
+  volumes:
+    - "./logs/redis/:/var/log/redis/"
+    - "./data/redis/:/data/"
+  container_name: redis
+
+influxdb:
+  image: tutum/influxdb
+  ports:
+    - "8083:8083"
+    - "8086:8086"
+  volumes:
+    - "./data/influxdb:/data/"
+  container_name: influxdb
+
+nginx:
+  build: nginx
+  ports:
+    - "8080:80"
+  volumes:
+    - "./logs/nginx/:/var/log/nginx/"
+  container_name: nginx
+
+mysql:
+  image: tutum/mysql
+  ports:
+    - "3306:3306"
+  volumes:
+    - "./data/mysql/:/var/lib/mysql/"
+  container_name: mysql
+
+mongodb:
+  image: tutum/mongodb
+  ports:
+    - "27017:27017"
+    - "28017:28017"
+  volumes:
+    - "./logs/mongodb/:/var/log/mongodb/"
+  container_name: mongodb
+
+rabbitmq:
+  image: tutum/rabbitmq
+  volumes:
+    - "./data/rabbitmq/:/var/lib/rabbitmq/mnesia/"
+  ports:
+    - "5672:5672"
+    - "15672:15672"
+  container_name: rabbitmq

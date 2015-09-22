@@ -1,0 +1,6 @@
+example:
+  image: richarvey/nginx-php-fpm
+  volumes:
+    - ../../src/example/:/usr/share/nginx/html
+  ports:
+    - 8081:80

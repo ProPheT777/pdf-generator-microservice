@@ -1,0 +1,77 @@
+api_volume:
+  extends:
+    file: common.yml
+    service: api_volume
+
+php:
+  extends:
+    file: common.yml
+    service: php
+  links:
+    - redis
+    - mongodb
+  volumes_from:
+    - api_volume
+  environment:
+    - PHP_SECRET=sjoidf9763klmdflfoegfihk676430jjghuj876vbth543
+    - SYMFONY_DOMAIN=127.0.0.1
+    - REDIS_APPENDONLY=yes
+    - REDIS_APPENDFSYNC=always
+    - REDIS_PASS=azerty
+    - INFLUXDB_USER=root
+    - INFLUXDB_PASS=azerty
+    - MONGODB_PASS=azerty
+    - MONGODB_COLLECTION=pdf
+    - RABBITMQ_USER=admin
+    - RABBITMQ_PASS=azerty
+    - MYSQL_USER=root
+    - MYSQL_PASS=azerty
+
+redis:
+  extends:
+    file: common.yml
+    service: redis
+  environment:
+    - REDIS_APPENDONLY=yes
+    - REDIS_APPENDFSYNC=always
+    - REDIS_PASS=azerty
+
+influxdb:
+  extends:
+    file: common.yml
+    service: influxdb
+  environment:
+    - ADMIN_USER=root
+    - INFLUXDB_INIT_PWD=azerty
+    - PRE_CREATE_DB=db1
+
+nginx:
+  extends:
+    file: common.yml
+    service: nginx
+  volumes_from:
+    - api_volume
+  links:
+    - php
+
+mysql:
+  extends:
+    file: common.yml
+    service: mysql
+  environment:
+    - MYSQL_PASS=azerty
+
+mongodb:
+  extends:
+    file: common.yml
+    service: mongodb
+  environment:
+    - MONGODB_PASS=azerty
+    - MONGODB_COLLECTION=pdf
+
+rabbitmq:
+  extends:
+    file: common.yml
+    service: rabbitmq
+  environment:
+    - RABBITMQ_PASS=azerty

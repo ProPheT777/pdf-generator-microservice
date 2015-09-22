@@ -1,0 +1,12 @@
+{
+    "name": "pdf/example",
+    "authors": [
+        {
+            "name": "Johann Saunier",
+            "email": "johann_27@hotmail.fr"
+        }
+    ],
+    "require": {
+        "twig/twig": "^1.22"
+    }
+}
