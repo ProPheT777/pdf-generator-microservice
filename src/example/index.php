@@ -1,6 +1,6 @@
 <?php
 
-use Guzzle\Http\Client;
+use GuzzleHttp\Client;
 
 require 'vendor/autoload.php';
 
@@ -20,6 +20,14 @@ $body3 = $twig->render('page.html.twig', array('name' => 'prophet'));
 
 $last = $twig->render('last.html.twig', array('name' => 'prophet'));
 
-new Client();
+$client = new Client([
+    'base_uri' => 'http://nginx',
+    'timeout' => 2.0
+]);
 
-echo 'done';
+$request = new \GuzzleHttp\Psr7\Request('GET', '/');
+$promise = $client->sendAsync($request)->then(function ($response) {
+    echo 'I completed! ' . $response->getBody();
+});
+
+$promise->wait();

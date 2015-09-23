@@ -4,3 +4,5 @@ example:
     - ../../src/example/:/usr/share/nginx/html
   ports:
     - 8081:80
+  external_links:
+    - nginx
